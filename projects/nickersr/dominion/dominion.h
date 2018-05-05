@@ -63,7 +63,7 @@ struct gameState {
   int numActions; /* Starts at 1 each turn */
   int coins; /* Use as you see fit! */
   int numBuys; /* Starts at 1 each turn */
-  int hand[MAX_PLAYERS][MAX_HAND];
+  int hand[MAX_PLAYERS][MAX_HAND]; // records card index of each card in hand.
   int handCount[MAX_PLAYERS];
   int deck[MAX_PLAYERS][MAX_DECK];
   int deckCount[MAX_PLAYERS];
@@ -127,5 +127,12 @@ int scoreFor(int player, struct gameState *state);
 int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 /* Set array position of each player who won (remember ties!) to
    1, others to 0 */
+
+/*refactored card functions*/
+int cardAdventurer(struct gameState* state, int currentPlayer);
+int cardSmithy(struct gameState *state, int currentPlayer, int handPos);
+int cardTribute(struct gameState *state, int currentPlayer, int nextPlayer);
+int cardAmbassador(struct gameState *state, int currentPlayer, int choice1, int choice2, int handPos);
+int cardTreasureMap(struct gameState *state, int currentPlayer, int handPos);
 
 #endif
