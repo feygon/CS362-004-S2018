@@ -5,6 +5,8 @@
 #include <math.h>
 #include <stdlib.h>
 
+#define DEBUGGER2
+
 int compare(const void* a, const void* b) {
   if (*(int*)a > *(int*)b)
     return 1;
@@ -643,12 +645,27 @@ int getCost(int cardNumber)
   return -1;
 }
 
-int cardAdventurer(struct gameState* state, int currentPlayer) 
+int cardAdventurer(struct gameState* state, int currentPlayer, int handpos) 
 {
+
 	int cardDrawn;
 	int z = 0;
 	int drawntreasure = 0;
 	int temphand[MAX_HAND];
+
+#ifdef DEBUGGER2
+	int decksize = state->deckCount[currentPlayer] + state->handCount[currentPlayer] + state->discardCount[currentPlayer];
+
+	printf("Post-before-operation state:\nPlayer %d/%d - Deck: %d, Draw Pile:%d/%d, Hand: %d/%d, Discard: %d/%d\n",
+		currentPlayer + 1, state->numPlayers,
+		decksize,
+		decksize - state->handCount[currentPlayer] - state->discardCount[currentPlayer],
+		decksize,
+		state->handCount[currentPlayer],
+		decksize,
+		state->discardCount[currentPlayer],
+		decksize);
+#endif
 
 	while ((drawntreasure)<2) {
 		if (state->deckCount[currentPlayer] < 1) {//if the deck is empty we need to shuffle discard and add to deck
@@ -668,6 +685,8 @@ int cardAdventurer(struct gameState* state, int currentPlayer)
 		state->discard[currentPlayer][state->discardCount[currentPlayer]++] = temphand[(z) - 1]; // discard all cards in play that have been drawn
 		z = (z) - 1;
 	}
+	discardCard(handpos, currentPlayer, state, 0);
+
 	return 0;
 }
 
@@ -870,7 +889,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card ) 
     {
     case adventurer:
-		return cardAdventurer(state, currentPlayer);
+		return cardAdventurer(state, currentPlayer, handPos);
 			
     case council_room:
       //+4 Cards
@@ -1275,7 +1294,7 @@ int discardCard(int handPos, int currentPlayer, struct gameState *state, int tra
       state->playedCardCount++;
     }
 	
-  //set played card to -1
+  //set old position of played card to -1
   state->hand[currentPlayer][handPos] = -1;
 	
   //remove card from player's hand

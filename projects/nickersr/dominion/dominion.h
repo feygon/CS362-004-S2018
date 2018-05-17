@@ -63,14 +63,14 @@ struct gameState {
   int numActions; /* Starts at 1 each turn */
   int coins; /* Use as you see fit! */
   int numBuys; /* Starts at 1 each turn */
-  int hand[MAX_PLAYERS][MAX_HAND]; // records card index of each card in hand.
-  int handCount[MAX_PLAYERS];
-  int deck[MAX_PLAYERS][MAX_DECK];
-  int deckCount[MAX_PLAYERS];
-  int discard[MAX_PLAYERS][MAX_DECK];
-  int discardCount[MAX_PLAYERS];
-  int playedCards[MAX_DECK];
-  int playedCardCount;
+  int hand[MAX_PLAYERS][MAX_HAND];	// records card index of each card in hand.
+  int handCount[MAX_PLAYERS];		// how many cards in player's hand?
+  int deck[MAX_PLAYERS][MAX_DECK];	// which cards are in the player's deck?
+  int deckCount[MAX_PLAYERS];		// how many cards are in the player's deck?
+  int discard[MAX_PLAYERS][MAX_DECK];//which cards have been discarded?
+  int discardCount[MAX_PLAYERS];	// how many cards are in the player's discard pile?
+  int playedCards[MAX_DECK];		// which cards have been played this round?
+  int playedCardCount;				// how many cards have been played this round?
 };
 
 /* All functions return -1 on failure, and DO NOT CHANGE GAME STATE;
@@ -129,7 +129,7 @@ int getWinners(int players[MAX_PLAYERS], struct gameState *state);
    1, others to 0 */
 
 /*refactored card functions*/
-int cardAdventurer(struct gameState* state, int currentPlayer);
+int cardAdventurer(struct gameState* state, int currentPlayer, int handpos);
 int cardSmithy(struct gameState *state, int currentPlayer, int handPos);
 int cardTribute(struct gameState *state, int currentPlayer, int nextPlayer);
 int cardAmbassador(struct gameState *state, int currentPlayer, int choice1, int choice2, int handPos);
